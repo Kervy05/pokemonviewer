@@ -8,8 +8,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// ---------- DATA MODELS ----------
-
 class Ability {
   final String name;
   final bool isHidden;
@@ -39,7 +37,6 @@ class Pokemon {
     required this.imageUrl,
   });
 
-  // This converts the JSON map from the API into a Pokemon object.
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     final abilities = <Ability>[];
 
@@ -75,9 +72,6 @@ class Pokemon {
     );
   }
 }
-
-// ---------- API FUNCTION ----------
-
 Future<Pokemon> fetchPokemon(String pokemonName) async {
   final url = Uri.parse(
     'https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}',
@@ -87,7 +81,7 @@ Future<Pokemon> fetchPokemon(String pokemonName) async {
         const Duration(seconds: 15),
       );
 
-  // Check the status code before reading the response as Pokémon data.
+
   if (response.statusCode == 404) {
     throw Exception('Pokémon not found. Please check the name and try again.');
   }
@@ -98,20 +92,20 @@ Future<Pokemon> fetchPokemon(String pokemonName) async {
     );
   }
 
-  // Convert the JSON text into a Dart map.
+ 
   final decoded = jsonDecode(response.body);
 
   if (decoded is! Map<String, dynamic>) {
     throw const FormatException('The API returned an unexpected data format.');
   }
 
-  // Convert the map into a Pokemon object.
+  
   return Pokemon.fromJson(decoded);
 }
 
-// ---------- HELPER FUNCTION ----------
 
-// Example: "mr-mime" becomes "Mr Mime".
+
+
 String prettify(String text) {
   return text
       .split('-')
@@ -121,7 +115,7 @@ String prettify(String text) {
       .join(' ');
 }
 
-// ---------- MAIN APP ----------
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -141,7 +135,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ---------- POKEMON SCREEN ----------
+
 
 class PokemonPage extends StatefulWidget {
   const PokemonPage({super.key});
@@ -162,7 +156,7 @@ class _PokemonPageState extends State<PokemonPage> {
   void initState() {
     super.initState();
 
-    // Load the same Pokémon from the previous activity when the app opens.
+
     searchPokemon();
   }
 
@@ -247,7 +241,7 @@ class _PokemonPageState extends State<PokemonPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ---------- SEARCH AREA ----------
+
             Card(
               elevation: 0,
               color: colors.primaryContainer,
@@ -298,7 +292,7 @@ class _PokemonPageState extends State<PokemonPage> {
             ),
             const SizedBox(height: 20),
 
-            // ---------- LOADING INDICATOR ----------
+
             if (isLoading)
               const Padding(
                 padding: EdgeInsets.all(35),
@@ -311,7 +305,7 @@ class _PokemonPageState extends State<PokemonPage> {
                 ),
               ),
 
-            // ---------- ERROR MESSAGE ----------
+
             if (!isLoading && errorMessage != null)
               Card(
                 color: colors.errorContainer,
@@ -341,7 +335,7 @@ class _PokemonPageState extends State<PokemonPage> {
                 ),
               ),
 
-            // ---------- POKEMON RESULT ----------
+
             if (!isLoading && pokemon != null) ...[
               _buildPokemonHeader(pokemon!, colors),
               const SizedBox(height: 16),
